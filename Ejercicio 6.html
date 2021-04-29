@@ -1,0 +1,314 @@
+<!Doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="Ejercicio%206.css">
+</head>
+
+<body>
+    <main>
+        <div style="text-align: center;padding-top: 20px;">
+            <textarea style="width: 50%;" cols="5" rows="5" readonly id="escrito"></textarea>
+        </div>
+        <div class="keyboard">
+            <!-- 2nd row -->
+            <div class="row">
+                <div class="group"> <kbd class="key large" onclick="escribir(126)">~</kbd> <kbd class="key" onclick="escribir(49)">!<span>1</span></kbd> <kbd class="key" onclick="escribir(50)">@<span>2</span></kbd> <kbd class="key" onclick="escribir(51)">#<span>3</span></kbd> <kbd class="key" onclick="escribir(52)">$<span>4</span></kbd> <kbd class="key" onclick="escribir(53)">%<span>5</span></kbd> <kbd class="key" onclick="escribir(54)">^<span>6</span></kbd> <kbd class="key" onclick="escribir(55)">&<span>7</span></kbd> <kbd class="key" onclick="escribir(56)">*<span>8</span></kbd> <kbd class="key" onclick="escribir(57)">(<span>9</span></kbd> <kbd class="key" onclick="escribir(48)">)<span>0</span></kbd> <kbd class="key" onclick="escribir(45)">-<i class="underscore">_</i></kbd> <kbd class="key" onclick="escribir(43)">+<span>=</span></kbd><kbd id="delete" class="key backspace" onclick="borrar()">Backspace</kbd></div>
+            </div>
+            <!-- 3rd row -->
+            <div class="row">
+                <div class="group"> <kbd class="key tab" onclick="escribir(9)">Tab</kbd> <kbd class="key" onclick="escribir(81)">Q</kbd> <kbd class="key" onclick="escribir(87)">W</kbd> <kbd class="key" onclick="escribir(69)">E</kbd> <kbd class="key" onclick="escribir(82)">R</kbd> <kbd class="key" onclick="escribir(84)">T</kbd> <kbd class="key" onclick="escribir(89)">Y</kbd> <kbd class="key" onclick="escribir(85)">U</kbd> <kbd class="key" onclick="escribir(73)">I</kbd> <kbd class="key" onclick="escribir(79)">O</kbd> <kbd class="key" onclick="escribir(80)">P</kbd> <kbd class="key" onclick="escribir(123)">{<span>[</span></kbd> <kbd class="key" onclick="escribir(125)">}<span>]</span></kbd> <kbd class="key" onclick="escribir(124)">|<span>\</span></kbd> </div>
+            </div>
+            <!-- 4th row -->
+            <div class="row">
+                <div class="group"> <kbd id="noActivado" class="key tab" onclick="blockMayus()">BloqMayús</kbd> <kbd class="key" onclick="escribir(65)">A</kbd> <kbd class="key" onclick="escribir(83)">S</kbd> <kbd class="key" onclick="escribir(68)">D</kbd> <kbd class="key" onclick="escribir(70)">F</kbd> <kbd class="key" onclick="escribir(71)">G</kbd> <kbd class="key" onclick="escribir(72)">H</kbd> <kbd class="key" onclick="escribir(74)">J</kbd> <kbd class="key" onclick="escribir(75)">K</kbd> <kbd class="key" onclick="escribir(76)">L</kbd> <kbd class="key" onclick="escribir(58)">:<span>;</span></kbd> <kbd class="key" onclick="escribir(34)">"<span>'</span></kbd> <kbd class="key enter" onclick="escribir(13)">Enter ↩</kbd> </div>
+            </div>
+            <!-- 5th row -->
+            <div class="row">
+                <div class="group"> <kbd id="false" class="key shift l-s" onclick="shift()"><span>⇧</span>&nbsp;Shift</kbd> <kbd class="key" onclick="escribir(90)">Z</kbd> <kbd class="key" onclick="escribir(88)">X</kbd> <kbd class="key" onclick="escribir(67)">C</kbd> <kbd class="key" onclick="escribir(86)">V</kbd> <kbd class="key" onclick="escribir(66)">B</kbd> <kbd class="key" onclick="escribir(78)">N</kbd> <kbd class="key" onclick="escribir(77)">M</kbd> <kbd class="key" onclick="escribir(60)">&lt;<span>,</span></kbd> <kbd class="key" onclick="escribir(62)">&gt;<span>.</span></kbd> <kbd class="key" onclick="escribir(63)">?<span>/</span></kbd></div>
+            </div>
+            <!-- 6th row -->
+            <div class="row">
+                <div class="group"><kbd class="key spacebar" onclick="escribir(32)">Space</kbd></div>
+            </div>
+        </div>
+        <script>
+            //Escribe según su código ascii pasado como parámetro
+            function escribir(codigoTexto) {
+                //Si el id existe se cambia para volver a su estado inicial
+                if (document.getElementById("shift") !== null) {
+                    document.getElementById("true").id = "false";
+                    //Cogemos todos los elementos que sean teclas normales
+                    var elementos = document.getElementsByClassName("key");
+                    //Se recorren todos los elementos
+                    for (var i = 0; i < elementos.length; i++) {
+                        //Se le asigna a la tecla "shift" un id para controlar
+                        elementos[14].id = "Noshift";
+                        //Cogemos de cada elemento sólamente su código ascii, el pasado como parámetro a través de onclick()
+                        var num = elementos[i].getAttribute("onclick").match((/\d+/));
+                        //Si el dígito es una letra de la "a" a la "z" (minúsculas), le asignamos un nuevo onclick() con su nuevo código ascii como parámetro (32 es la diferencia de dígitos en ascii que hay entre mayúsculas y minúsculas)
+                        if (num > 96 && num < 123) {
+                            var auxNum = parseInt(num) - parseInt(32);
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(" + auxNum + ")");
+                        }
+                        //Teclas especiales
+                        if (num == 95) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(45)");
+                        }
+                        if (num == 61) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(43)");
+                        }
+                        if (num == 41) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(48)");
+                        }
+                        if (num == 33) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(49)");
+                        }
+                        if (num == 64) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(50)");
+                        }
+                        if (num == 35) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(51)");
+                        }
+                        if (num == 36) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(52)");
+                        }
+                        if (num == 37) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(53)");
+                        }
+                        if (num == 94) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(54)");
+                        }
+                        if (num == 38) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(55)");
+                        }
+                        if (num == 42) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(56)");
+                        }
+                        if (num == 40) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(57)");
+                        }
+                        if (num == 91) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(123)");
+                        }
+                        if (num == 93) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(125)");
+                        }
+                        if (num == 92) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(124)");
+                        }
+                        if (num == 59) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(58)");
+                        }
+                        if (num == 39) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(34)");
+                        }
+                        if (num == 44) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(60)");
+                        }
+                        if (num == 46) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(62)");
+                        }
+                        if (num == 47) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(63)");
+                        }
+                        //Si el dígito es una letra de la "A" a la "Z" (mayúsculas), se hace lo mismo que con las minúsculas pero sumando 32
+                        if (num > 64 && num < 91) {
+                            var auxNum = parseInt(32) + parseInt(num);
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(" + auxNum + ")");
+                        }
+                    }
+                }
+                var caracter = String.fromCharCode(codigoTexto);
+                var texto = document.getElementById("escrito");
+                //Espacio
+                if (caracter == "32") {
+                    texto.innerHTML += "<p>&nbsp</p>";
+                }
+                //Enter
+                else if (caracter == "16") {
+                    texto.innerHTML += "</br>";
+                } 
+                //Escribir la letra
+                else {
+                    texto.innerHTML += caracter;
+                }
+            }
+
+            //Se activa la tecla "shift", permitiendo escribir un carácter especial secundario o una sola mayúscula
+            function shift() {
+                var elementos = document.getElementsByClassName("key");
+                if (document.getElementById("false")) {
+                    for (var i = 0; i < elementos.length; i++) {
+                        //Le asignamos un id a la tecla "shift" para controlar
+                        elementos[14].id = "shift";
+                        var num = elementos[i].getAttribute("onclick").match((/\d+/));
+                        if (num == 45) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(95)");
+                        }
+                        if (num == 43) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(61)");
+                        }
+                        if (num == 48) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(41)");
+                        }
+                        if (num == 49) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(33)");
+                        }
+                        if (num == 50) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(64)");
+                        }
+                        if (num == 51) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(35)");
+                        }
+                        if (num == 52) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(36)");
+                        }
+                        if (num == 53) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(37)");
+                        }
+                        if (num == 54) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(94)");
+                        }
+                        if (num == 55) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(38)");
+                        }
+                        if (num == 56) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(42)");
+                        }
+                        if (num == 57) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(40)");
+                        }
+                        if (num == 123) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(91)");
+                        }
+                        if (num == 125) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(93)");
+                        }
+                        if (num == 124) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(92)");
+                        }
+                        if (num == 58) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(59)");
+                        }
+                        if (num == 34) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(39)");
+                        }
+                        if (num == 60) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(44)");
+                        }
+                        if (num == 62) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(46)");
+                        }
+                        if (num == 63) {
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(47)");
+                        }
+                        if (num > 64 && num < 91) {
+                            var auxNum = parseInt(32) + parseInt(num);
+                            elementos[i].removeAttribute("onclick");
+                            elementos[i].setAttribute("onclick", "escribir(" + auxNum + ")");
+                        }
+                    }
+                    //Se cambia el id para controlar que se ha pulsado la telca "shift"
+                    document.getElementById("false").id = "true";
+                }
+            }
+
+            //Activa y desactiva el bloqueo de mayúsculas
+            function blockMayus() {
+                //Según el id de la tecla "blockMayus", estará pulsado o no
+                if (document.getElementById("noActivado")) {
+                    alert("Mayúsculas Desactivadas");
+                    var elementos = document.getElementsByClassName("key");
+                    if (document.getElementById("noActivado")) {
+                        //Mismo funcionamiento que la función shift()
+                        for (var i = 0; i < elementos.length; i++) {
+                            elementos[28].id = "siActivado";
+                            var num = elementos[i].getAttribute("onclick").match((/\d+/));
+                            if (num > 64 && num < 91) {
+                                var auxNum = parseInt(32) + parseInt(num);
+                                elementos[i].removeAttribute("onclick");
+                                elementos[i].setAttribute("onclick", "escribir(" + auxNum + ")");
+                                //Cambiar las letras que se muestran en el teclado
+                                var caracter = String.fromCharCode(auxNum);
+                                elementos[i].innerHTML = caracter;
+                            }
+                        }
+                    }
+                } else {
+                    //Mismo funcionamiento que la función shift()
+                    if (document.getElementById("siActivado")) {
+                        alert("Mayúsculas Activadas");
+                        var elementos = document.getElementsByClassName("key");
+                        if (document.getElementById("siActivado")) {
+                            for (var i = 0; i < elementos.length; i++) {
+                                elementos[28].id = "noActivado";
+                                var num = elementos[i].getAttribute("onclick").match((/\d+/));
+                                if (num > 96 && num < 123) {
+                                    var auxNum = parseInt(num) - parseInt(32);
+                                    elementos[i].removeAttribute("onclick");
+                                    elementos[i].setAttribute("onclick", "escribir(" + auxNum + ")");
+                                    //Cambiar las letras que se muestran en el teclado
+                                    var caracter = String.fromCharCode(auxNum);
+                                    elementos[i].innerHTML = caracter;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+            //Borra la letra anterior
+            function borrar() {
+                var texto = document.getElementById('escrito').innerHTML;
+                document.getElementById('escrito').innerHTML = texto.substring(0, texto.length - 1);
+            }
+
+        </script>
+    </main>
+</body>
+
+</html>
